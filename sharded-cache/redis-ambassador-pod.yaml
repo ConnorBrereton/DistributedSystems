@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sharded-redis-ambassador
+spec:
+  containers:
+    # Application container goes here!
+    - name: twemproxy
+      image: ganomede/twemproxy
+      command: ['nutcracker', 'c', '/etc/config/nutracker.yaml', 'v', '7', '-s', '6222']
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+  volumes:
+  - name: config-volume
+    configMap:
+        name: twem-config
