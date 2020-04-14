@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sharded-cache-ambassador
+spec:
+  containers:
+  - name: twemproxy
+    image: ganomede/twemproxy
+    command:
+    - nutcracker
+    - -c
+    - /etc/config/nutcracker.yaml
+    - -v
+    - 7
+    - -s
+    - 6222
+    volumeMounts:
+      - name: config-volume
+        mountPath: /etc/config
+volumes:
+  - name: config-volume
+    configMap:
+      name: twem-config
